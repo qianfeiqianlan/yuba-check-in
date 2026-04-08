@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Chrome 插件模板",
+  "name": "斗鱼鱼吧自动签到助手",
   "version": "1.0.0",
-  "description": "Chrome 插件基础工程模板",
+  "description": "斗鱼鱼吧一键批量自动签到工具，轻松管理关注的主播鱼吧，每日签到省时省力",
+  "author": "",
   "icons": {
     "16": "icons/douyu.png",
     "32": "icons/douyu.png",
@@ -32,5 +33,5 @@
     "service_worker": "background.js"
   },
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["https://yuba.douyu.com/*"]
 }

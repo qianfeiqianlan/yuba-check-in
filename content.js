@@ -1,34 +1,3 @@
-// 接收来自 popup 和 background 的消息
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Content script 收到消息:', request)
-
-  if (request.action === 'test') {
-    // 示例：在页面上显示提示
-    const div = document.createElement('div')
-    div.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px;
-      background: #409eff;
-      color: white;
-      border-radius: 4px;
-      z-index: 999999;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    `
-    div.textContent = `插件消息: ${request.data}`
-    document.body.appendChild(div)
-
-    setTimeout(() => {
-      div.remove()
-    }, 3000)
-
-    sendResponse({ message: 'Content script 已收到消息' })
-  }
-
-  return true // 保持消息通道开放，用于异步响应
-})
-
 // 页面加载完成后执行
 console.log('Chrome 插件 content script 已加载')
 

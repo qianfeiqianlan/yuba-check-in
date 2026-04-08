@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 
   if (details.reason === 'install') {
     // 首次安装时打开欢迎页面
-    chrome.tabs.create({ url: 'https://github.com/your/repo' })
+    chrome.tabs.create({ url: 'https://github.com/qianfeiqianlan/yuba-check-in' })
   }
 })
 

@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (groupList.length === 0) {
       savedGroupsList.innerHTML = `
         <div class="empty-tip" style="text-align: center; padding: 20px 0; color: #999; font-size: 14px;">
-          暂无保存的小组
+          暂无添加的主播
         </div>
       `
       return

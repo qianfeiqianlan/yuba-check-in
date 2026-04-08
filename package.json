@@ -1,13 +1,25 @@
 {
   "name": "yuba-check-in",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "斗鱼鱼吧自动签到Chrome扩展插件，一键批量自动签到，轻松管理关注的主播鱼吧",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "clean": "node -e \"require('fs').existsSync('yuba-check-in.zip') && require('fs').unlinkSync('yuba-check-in.zip') && console.log('✅ 已清理打包文件')\""
   },
-  "keywords": [],
+  "keywords": [
+    "斗鱼",
+    "douyu",
+    "鱼吧",
+    "自动签到",
+    "chrome-extension",
+    "浏览器插件"
+  ],
   "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.32.1"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/yuba-check-in.git"
+  },
+  "homepage": "https://github.com/your-username/yuba-check-in#readme"
 }
