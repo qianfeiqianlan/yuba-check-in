@@ -1,0 +1,9 @@
+/* Content script 注入的样式 */
+.chrome-extension-hidden {
+  display: none !important;
+}
+
+.chrome-extension-highlight {
+  outline: 2px solid #409eff !important;
+  outline-offset: 2px !important;
+}
