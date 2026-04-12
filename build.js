@@ -7,7 +7,10 @@ import { execSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'
 
-const outputFile = 'yuba-check-in.zip'
+// 读取manifest.json中的版本号
+const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'))
+const version = manifest.version
+const outputFile = `yuba-check-in-${version}.zip`
 const excludePatterns = [
   'node_modules',
   '.git',
@@ -23,10 +26,14 @@ const excludePatterns = [
 
 console.log('🔨 开始打包插件...')
 
-// 先清理旧的打包文件
-if (fs.existsSync(outputFile)) {
-  fs.unlinkSync(outputFile)
-  console.log('🧹 已清理旧的打包文件')
+// 先清理所有旧的打包文件
+const files = fs.readdirSync('.')
+const oldZipFiles = files.filter(file => /^yuba-check-in-.*\.zip$/.test(file))
+if (oldZipFiles.length > 0) {
+  oldZipFiles.forEach(file => {
+    fs.unlinkSync(file)
+    console.log(`🧹 已清理旧的打包文件: ${file}`)
+  })
 }
 
 try {

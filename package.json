@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.js",
-    "clean": "node -e \"require('fs').existsSync('yuba-check-in.zip') && require('fs').unlinkSync('yuba-check-in.zip') && console.log('✅ 已清理打包文件')\""
+    "clean": "node -e \"require('fs').readdirSync('.').filter(f => /^yuba-check-in-.*\\.zip$/.test(f)).forEach(f => { require('fs').unlinkSync(f); console.log('✅ 已清理打包文件:', f) })\""
   },
   "keywords": [
     "斗鱼",

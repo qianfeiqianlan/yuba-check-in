@@ -1,0 +1,43 @@
+name: 发布插件版本
+
+on:
+  push:
+    tags:
+      - 'v*' # 当推送v开头的tag时触发，比如v1.0.1、v1.1.0
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 需要写入权限来创建release
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置Node.js环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 执行打包
+        run: npm run build
+
+      - name: 获取版本号
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: 创建GitHub Release并上传资产
+        uses: softprops/action-gh-release@v1
+        with:
+          files: yuba-check-in-${{ steps.get_version.outputs.VERSION }}.zip
+          name: v${{ steps.get_version.outputs.VERSION }}
+          generate_release_notes: true # 自动生成release notes
+          draft: false # 直接发布，不是草稿
+          prerelease: false # 不是预发布版本
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
