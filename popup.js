@@ -40,6 +40,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const testBtn = document.getElementById('testBtn')
   const openSignPagesBtn = document.getElementById('openSignPagesBtn')
   const savedGroupsList = document.getElementById('savedGroupsList')
+  const autoSignToggle = document.getElementById('autoSignToggle')
+
+  // 加载自动签到开关状态
+  async function loadAutoSignStatus() {
+    const result = await chrome.storage.local.get('auto_sign_enabled')
+    autoSignToggle.checked = result.auto_sign_enabled || false
+  }
+
+  // 保存自动签到开关状态
+  autoSignToggle.addEventListener('change', async () => {
+    await chrome.storage.local.set({ auto_sign_enabled: autoSignToggle.checked })
+  })
 
   // 加载已保存的小组列表
   async function loadSavedGroups() {
@@ -110,8 +122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  // 页面加载时读取已保存的小组
+  // 页面加载时读取已保存的小组和自动签到状态
   await loadSavedGroups()
+  await loadAutoSignStatus()
 
   // 打开我关注的鱼吧
   document.getElementById('myGroupsBtn').addEventListener('click', () => {

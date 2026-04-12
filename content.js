@@ -27,5 +27,5 @@ window.addEventListener('load', () => {
       console.log('ℹ️ 无需签到，未找到签到按钮')
     }
     window.close()
-  }, 1000)
+  }, 3000)
 })

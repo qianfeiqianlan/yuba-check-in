@@ -27,11 +27,16 @@
       "matches": ["https://yuba.douyu.com/mygroups", "https://yuba.douyu.com/groupcates/*"],
       "js": ["js/mygroups.js"],
       "css": ["content.css"]
+    },
+    {
+      "matches": ["https://*.douyu.com/*", "https://douyu.com/*"],
+      "js": ["js/auto-sign.js"],
+      "run_at": "document_idle"
     }
   ],
   "background": {
     "service_worker": "background.js"
   },
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["https://yuba.douyu.com/*"]
+  "host_permissions": ["https://*.douyu.com/*"]
 }
