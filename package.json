@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node build.js",
-    "clean": "node -e \"require('fs').readdirSync('.').filter(f => /^yuba-check-in-.*\\.zip$/.test(f)).forEach(f => { require('fs').unlinkSync(f); console.log('✅ 已清理打包文件:', f) })\""
+    "clean": "node -e \"require('fs').readdirSync('.').filter(f => /^yuba-check-in-.*\\.zip$/.test(f)).forEach(f => { require('fs').unlinkSync(f); console.log('✅ 已清理打包文件:', f) })\"",
+    "tag:win": "powershell -ExecutionPolicy Bypass -File ./tag.ps1",
+    "tag:unix": "chmod +x ./tag.sh && ./tag.sh"
   },
   "keywords": [
     "斗鱼",
