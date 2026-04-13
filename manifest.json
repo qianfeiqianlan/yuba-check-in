@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "斗鱼鱼吧自动签到助手",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "斗鱼鱼吧一键批量自动签到工具，轻松管理关注的主播鱼吧，每日签到省时省力",
   "author": "",
   "icons": {

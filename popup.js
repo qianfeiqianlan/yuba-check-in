@@ -157,4 +157,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 关闭popup
     window.close()
   })
+
+  // 关闭所有签到标签页
+  document.getElementById('closeAllSignTabsBtn').addEventListener('click', async () => {
+    // 查询所有标签页
+    const tabs = await chrome.tabs.query({})
+    // 筛选出URL包含open_type=auto_check_in的标签页
+    const signTabs = tabs.filter(tab => tab.url && tab.url.includes('open_type=auto_check_in'))
+
+    if (signTabs.length === 0) {
+      // alert('未找到需要关闭的签到标签页~')
+      return
+    }
+
+    // 关闭所有匹配的标签页
+    signTabs.forEach(tab => {
+      chrome.tabs.remove(tab.id)
+    })
+
+    // 关闭popup
+    window.close()
+  })
 })

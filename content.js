@@ -23,9 +23,9 @@ window.addEventListener('load', () => {
     if (signBtn) {
       signBtn.click()
       console.log('✅ 签到成功')
+      window.close()
     } else {
       console.log('ℹ️ 无需签到，未找到签到按钮')
     }
-    window.close()
   }, 3000)
 })
