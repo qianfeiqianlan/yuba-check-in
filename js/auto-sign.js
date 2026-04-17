@@ -4,9 +4,10 @@
 
   try {
     // 读取自动签到开关状态
-    const result = await chrome.storage.local.get(['auto_sign_enabled', 'last_sign_date'])
+    const result = await chrome.storage.local.get(['auto_sign_enabled', 'last_sign_date', 'auto_sign_mygroups_enabled'])
     const autoSignEnabled = result.auto_sign_enabled || false
     const lastSignDate = result.last_sign_date || ''
+    const autoSignMygroupsEnabled = result.auto_sign_mygroups_enabled || false
 
     console.log('🔧 自动签到配置:', { autoSignEnabled, lastSignDate })
 
@@ -26,26 +27,39 @@
       return
     }
 
-    // 获取已保存的主播列表
-    const groupsResult = await chrome.storage.local.get('saved_groups')
-    const savedGroups = groupsResult.saved_groups || {}
-    const groupList = Object.values(savedGroups)
-
-    console.log('📋 已保存主播列表:', groupList)
-    console.log('📊 主播数量:', groupList.length)
-
-    // 如果没有保存的主播，直接返回
-    if (groupList.length === 0) {
-      console.log('ℹ️ 没有保存的主播，跳过自动签到')
-      return
-    }
-
     // 发送消息给background执行打开签到页面（content script无tabs权限）
     console.log('🚀 发送消息给后台，开始执行自动签到...')
-    const response = await chrome.runtime.sendMessage({
-      action: 'autoSign',
-      groups: groupList
-    })
+
+    let response
+    if (autoSignMygroupsEnabled) {
+      // 直接签到关注的鱼吧模式
+      console.log('ℹ️ 已开启直接签到关注列表模式')
+      response = await chrome.runtime.sendMessage({
+        action: 'autoSign',
+        type: 'mygroups'
+      })
+    } else {
+      // 原有模式：打开已保存的主播页面
+      // 获取已保存的主播列表
+      const groupsResult = await chrome.storage.local.get('saved_groups')
+      const savedGroups = groupsResult.saved_groups || {}
+      const groupList = Object.values(savedGroups)
+
+      console.log('📋 已保存主播列表:', groupList)
+      console.log('📊 主播数量:', groupList.length)
+
+      // 如果没有保存的主播，直接返回
+      if (groupList.length === 0) {
+        console.log('ℹ️ 没有保存的主播，跳过自动签到')
+        return
+      }
+
+      response = await chrome.runtime.sendMessage({
+        action: 'autoSign',
+        type: 'groups',
+        groups: groupList
+      })
+    }
     console.log('📩 后台返回结果:', response)
 
     // 保存今日签到时间

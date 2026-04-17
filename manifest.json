@@ -29,6 +29,11 @@
       "css": ["content.css"]
     },
     {
+      "matches": ["https://yuba.douyu.com/mygroups?open_type=auto_check_in"],
+      "js": ["js/mygroups-auto-sign.js"],
+      "css": ["content.css"]
+    },
+    {
       "matches": ["https://*.douyu.com/*", "https://douyu.com/*"],
       "js": ["js/auto-sign.js"],
       "run_at": "document_idle"

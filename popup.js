@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const openSignPagesBtn = document.getElementById('openSignPagesBtn')
   const savedGroupsList = document.getElementById('savedGroupsList')
   const autoSignToggle = document.getElementById('autoSignToggle')
+  const autoSignMygroupsToggle = document.getElementById('autoSignMygroupsToggle')
 
   // 加载自动签到开关状态
   async function loadAutoSignStatus() {
@@ -53,8 +54,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     await chrome.storage.local.set({ auto_sign_enabled: autoSignToggle.checked })
   })
 
+  // 加载关注列表自动签到开关状态
+  async function loadAutoSignMygroupsStatus() {
+    const result = await chrome.storage.local.get('auto_sign_mygroups_enabled')
+    autoSignMygroupsToggle.checked = result.auto_sign_mygroups_enabled || false
+  }
+
+  // 保存关注列表自动签到开关状态
+  autoSignMygroupsToggle.addEventListener('change', async () => {
+    await chrome.storage.local.set({ auto_sign_mygroups_enabled: autoSignMygroupsToggle.checked })
+    // 开关状态变化时重新加载列表
+    await loadSavedGroups()
+  })
+
   // 加载已保存的小组列表
   async function loadSavedGroups() {
+    // 检查是否开启了直接签到关注列表模式
+    const mygroupsResult = await chrome.storage.local.get('auto_sign_mygroups_enabled')
+    const autoSignMygroupsEnabled = mygroupsResult.auto_sign_mygroups_enabled || false
+
+    if (autoSignMygroupsEnabled) {
+      savedGroupsList.innerHTML = `
+        <div class="empty-tip" style="text-align: center; padding: 20px 0; color: #999; font-size: 14px;">
+          已开启直接签到关注的鱼吧模式<br>无需手动添加主播
+        </div>
+      `
+      return
+    }
+
     const savedGroups = await getSavedGroups()
     const groupList = Object.values(savedGroups)
 
@@ -123,8 +150,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 页面加载时读取已保存的小组和自动签到状态
-  await loadSavedGroups()
   await loadAutoSignStatus()
+  await loadAutoSignMygroupsStatus()
+  await loadSavedGroups()
 
   // 打开我关注的鱼吧
   document.getElementById('myGroupsBtn').addEventListener('click', () => {
@@ -140,6 +168,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 打开所有签到页面
   openSignPagesBtn.addEventListener('click', async () => {
+    // 检查是否开启了直接签到关注列表模式
+    const mygroupsResult = await chrome.storage.local.get('auto_sign_mygroups_enabled')
+    const autoSignMygroupsEnabled = mygroupsResult.auto_sign_mygroups_enabled || false
+
+    if (autoSignMygroupsEnabled) {
+      // 直接打开我关注的鱼吧页面
+      chrome.tabs.create({ url: 'https://yuba.douyu.com/mygroups?open_type=auto_check_in', active: false })
+      window.close()
+      return
+    }
+
     const savedGroups = await getSavedGroups()
     const groupList = Object.values(savedGroups)
 

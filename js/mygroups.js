@@ -192,6 +192,17 @@ const observer = new MutationObserver(debounce(async () => {
 
 // 页面加载完成后执行
 window.addEventListener('load', async () => {
+  // 检查是否开启了直接签到关注列表模式，如果开启则不添加按钮
+  try {
+    const result = await chrome.storage.local.get('auto_sign_mygroups_enabled')
+    if (result.auto_sign_mygroups_enabled) {
+      console.log('ℹ️ 已开启直接签到关注列表模式，不添加操作按钮')
+      return
+    }
+  } catch (e) {
+    console.log('⚠️ 检查开关状态失败:', e.message)
+  }
+
   // 延迟执行，确保动态内容加载完成
   setTimeout(async () => {
     await processAllGroups()

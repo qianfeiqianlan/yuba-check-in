@@ -167,7 +167,7 @@
       position: relative;
     }
     .info-icon:hover::after {
-      content: "开启开关以后，每天在第一次打开「斗鱼」网站的时候自动执行签到所有鱼吧";
+      content: attr(data-tooltip);
       position: absolute;
       bottom: 100%;
       left: 50%;
@@ -198,9 +198,21 @@
   <div class="auto-row">
     <div class="auto-label">
       每天第一次访问斗鱼时自动签到
+      <span class="info-icon" data-tooltip="开启开关以后，每天在第一次打开「斗鱼」网站的时候自动执行签到所有鱼吧">ⓘ</span>
     </div>
     <label class="toggle-switch">
       <input type="checkbox" id="autoSignToggle">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="auto-row">
+    <div class="auto-label">
+      直接签到我关注的鱼吧<br>（无需手动添加主播）
+      <span class="info-icon" data-tooltip="开启开关以后，无需手动添加主播，直接签到你关注的所有鱼吧，popup页面将不再显示主播列表">ⓘ</span>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="autoSignMygroupsToggle">
       <span class="toggle-slider"></span>
     </label>
   </div>

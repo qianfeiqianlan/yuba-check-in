@@ -19,12 +19,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.action === 'autoSign') {
     // 处理自动签到请求
-    const groupList = request.groups || []
-    groupList.forEach(group => {
-      const signUrl = `https://yuba.douyu.com${group.href}?open_type=auto_check_in`
+    const type = request.type || 'groups' // 默认使用原有模式
+
+    if (type === 'mygroups') {
+      // 直接签到关注的鱼吧模式
+      const signUrl = 'https://yuba.douyu.com/mygroups?open_type=auto_check_in'
       chrome.tabs.create({ url: signUrl, active: false })
-    })
-    sendResponse({ status: 'success', message: '自动签到已触发' })
+      sendResponse({ status: 'success', message: '关注列表自动签到已触发' })
+    } else {
+      // 原有模式：打开已保存的主播页面
+      const groupList = request.groups || []
+      groupList.forEach(group => {
+        const signUrl = `https://yuba.douyu.com${group.href}?open_type=auto_check_in`
+        chrome.tabs.create({ url: signUrl, active: false })
+      })
+      sendResponse({ status: 'success', message: '自动签到已触发' })
+    }
   }
 
   return true // 保持消息通道开放
