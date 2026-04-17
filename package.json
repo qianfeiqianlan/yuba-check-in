@@ -1,6 +1,6 @@
 {
   "name": "yuba-check-in",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "斗鱼鱼吧自动签到Chrome扩展插件，一键批量自动签到，轻松管理关注的主播鱼吧",
   "type": "module",
   "scripts": {

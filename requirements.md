@@ -85,3 +85,14 @@
   1. popup 页面不显示已保存主播列表
   2. 在 mygroups.js 中不需要显示添加和移出按钮
   3. 执行鱼吧自动签到时，直接打开 `https://yuba.douyu.com/mygroups?open_type=auto_check_in` 即可，无需遍历打开单个主播页面
+
+### 需求9：mygroups页面自动滚动批量签到
+**触发条件**：访问 `https://yuba.douyu.com/mygroups?open_type=auto_check_in` 页面时
+**功能实现**：
+- 新增独立注入脚本 `js/mygroups-auto-sign.js`，仅注入到mygroups页面
+- 页面加载时自动检测URL中是否存在 `open_type=auto_check_in` 参数，不存在则不执行
+- 自动滚动页面到底部，直到出现「没有更多内容了」提示，加载完所有关注的鱼吧
+- 收集页面上所有鱼吧的链接信息，自动去重
+- 通过 `sendMessage` 调用现有的 `autoSign` 接口，将收集到的鱼吧数组发送到background.js
+- background.js自动打开所有鱼吧的签到页面，完成批量签到
+- 所有请求发送完成后，自动关闭当前mygroups页面
