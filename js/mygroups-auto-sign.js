@@ -15,8 +15,7 @@ function debounce(func, wait) {
 
 // 检查是否还有更多内容
 function hasMoreContent() {
-  // 检测页面中是否存在"没有更多内容了"的文本
-  const noMoreText = document.body.innerText.includes('没有更多内容了')
+  const noMoreText = document.querySelector('.styles-module__eBtHEq__noMoreSplit')?.innerText
   return !noMoreText
 }
 
@@ -30,12 +29,12 @@ function scrollToBottom() {
 
 // 收集页面所有鱼吧链接
 function collectAllGroups() {
-  const aTags = Array.from(document.querySelectorAll('a[href^="/discussion/"]'))
+  const groupItems = Array.from(document.querySelectorAll('.index-module__Ud8XJa__main'))
   const groups = []
   const hrefSet = new Set() // 用于去重
 
-  for (const aTag of aTags) {
-    const href = aTag.getAttribute('href')
+  for (const item of groupItems) {
+    const href = item.getAttribute('href')
     if (!href || !href.match(/^\/discussion\/\d+\/posts$/)) {
       continue
     }
@@ -46,23 +45,9 @@ function collectAllGroups() {
     }
     hrefSet.add(href)
 
-    // 提取数据，参考mygroups.js的逻辑
-    const img = aTag.querySelector('img')
-    const titleDiv = aTag.querySelector('div.index-module__Ud8XJa__name')
-
-    if (!img || !titleDiv) {
-      continue
-    }
-
-    const src = img.getAttribute('src')
-    const title = titleDiv.getAttribute('title') || titleDiv.textContent.trim()
-
     groups.push({
       href,
-      src,
-      title,
-      fullUrl: `https://yuba.douyu.com${href}`,
-      saveTime: Date.now()
+      fullUrl: `https://yuba.douyu.com${href}`
     })
   }
 
@@ -73,22 +58,11 @@ function collectAllGroups() {
 async function runAutoSign() {
   console.log('🚀 开始执行mygroups自动签到流程')
 
-  // 滚动加载所有内容
-  let scrollCount = 0
-  const maxScrollCount = 50 // 防止无限滚动
-
-  while (hasMoreContent() && scrollCount < maxScrollCount) {
+  while (hasMoreContent()) {
     scrollToBottom()
-    console.log(`📜 正在加载更多内容，第${scrollCount + 1}次滚动`)
     await new Promise(resolve => setTimeout(resolve, 1500)) // 等待内容加载
-    scrollCount++
   }
 
-  if (scrollCount >= maxScrollCount) {
-    console.log('⚠️ 达到最大滚动次数，停止加载')
-  } else {
-    console.log('✅ 所有内容已加载完成')
-  }
 
   // 收集所有鱼吧链接
   const groups = collectAllGroups()
