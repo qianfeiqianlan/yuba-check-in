@@ -15,7 +15,7 @@ function debounce(func, wait) {
 
 // 检查是否还有更多内容
 function hasMoreContent() {
-  const noMoreText = document.querySelector('.styles-module__eBtHEq__noMoreSplit')?.innerText
+  const noMoreText = document.querySelector('.eBtHEq_noMoreSplit')?.innerText
   return !noMoreText
 }
 
@@ -29,7 +29,7 @@ function scrollToBottom() {
 
 // 收集页面所有鱼吧链接
 function collectAllGroups() {
-  const groupItems = Array.from(document.querySelectorAll('.index-module__Ud8XJa__main'))
+  const groupItems = Array.from(document.querySelectorAll('.Ud8XJa_main'))
   const groups = []
   const hrefSet = new Set() // 用于去重
 

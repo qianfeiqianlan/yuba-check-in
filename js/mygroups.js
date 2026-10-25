@@ -133,7 +133,7 @@ async function processGroupCard(aTag) {
 
   // 提取数据
   const img = aTag.querySelector('img')
-  const titleDiv = aTag.querySelector('div.index-module__Ud8XJa__name')
+  const titleDiv = aTag.querySelector('div.Ud8XJa_name')
 
   if (!img || !titleDiv) {
     return
